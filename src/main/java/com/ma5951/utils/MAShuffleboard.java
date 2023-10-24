@@ -5,6 +5,7 @@ import java.util.HashMap;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class MAShuffleboard {
     private ShuffleboardTab board;
@@ -13,6 +14,7 @@ public class MAShuffleboard {
     public MAShuffleboard(String tab) {
         board = Shuffleboard.getTab(tab);
         values = new HashMap<String, GenericEntry>();
+  
     }
 
     public void addNum(String title, double num) {
@@ -38,7 +40,7 @@ public class MAShuffleboard {
             values.get(title).setBoolean(bol);
         }
     }
-    
+
     public double getNum(String title) {
         if (values.containsKey(title)) {
             return values.get(title).getDouble(0);

@@ -8,9 +8,12 @@ package frc.robot;
 import com.ma5951.utils.commands.DefaultRunInternallyControlledSubsystem;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.swerve.DriveSwerveCommand;
+import frc.robot.subsystems.Dashboard.Dashbord;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorConstance;
 import frc.robot.subsystems.intake.Intake;
@@ -52,10 +55,19 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     SwerveDrivetrainSubsystem.getInstance().resetNavx();
     RobotContainer.photonVision.changePipeline(0);
+    Dashbord.getInstance();
 
     CommandScheduler.getInstance().setDefaultCommand(
         Elevator.getInstance(), new DefaultRunInternallyControlledSubsystem(
             Elevator.getInstance(), ElevatorConstance.minPose));
+
+    Shuffleboard.getTab("command").add("open", new InstantCommand(
+      () -> Elevator.getInstance().setSetPoint(ElevatorConstance.ConeMidPose)
+    ));
+
+    Shuffleboard.getTab("command").add("close", new InstantCommand(
+      () -> Elevator.getInstance().setSetPoint(ElevatorConstance.minPose)
+    ));
   }
 
   /**
@@ -79,6 +91,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     RobotContainer.photonVision.update();
+    Dashbord.getInstance();
 
   }
 
